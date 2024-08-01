@@ -25,5 +25,9 @@ public class ApplicationDbContext : DbContext
             new GovernmentOfficeRegion { GovernmentOfficeRegionId = 1, GovernmentOfficeRegionName = "GOV1", Description = "Des1", CountyId = 1, IsActive = true },
             new GovernmentOfficeRegion { GovernmentOfficeRegionId = 2, GovernmentOfficeRegionName = "GOV2", Description = "Des2", CountyId = 2, IsActive = true }
         );
+        modelBuilder.Entity<Programme>()
+            .HasOne(p => p.Contact)
+            .WithMany(c => c.Programmes)
+            .HasForeignKey(p => p.ContactId);
     }
 }

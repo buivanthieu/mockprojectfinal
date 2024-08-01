@@ -29,4 +29,5 @@ public class Contact
     public string JobTitle { get; set; }
 
     public bool IsActive { get; set; }
+    public ICollection<Programme> Programmes { get; set; }
 }

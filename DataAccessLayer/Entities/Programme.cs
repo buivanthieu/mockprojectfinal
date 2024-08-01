@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace DataAccessLayer.Entities;
 public class Programme
@@ -12,9 +14,11 @@ public class Programme
     public string Description { get; set; }
 
     [Required]
+    [ForeignKey("Contact")]
     public int ContactId { get; set; }
 
     public bool IsActive { get; set; }
 
-    public Contact Contact { get; set; }
+    [ForeignKey("ContactId")]
+    public Contact? Contact { get; set; }
 }

@@ -35,10 +35,23 @@ public class ProgrammeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Programme>> CreateProgramme(Programme programme)
+    public async Task<ActionResult<Programme>> CreateProgramme([FromBody] Programme programme)
     {
-        await _programmeService.AddProgrammeAsync(programme);
-        return CreatedAtAction(nameof(GetProgramme), new { id = programme.Id }, programme);
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _programmeService.AddProgrammeAsync(programme);
+            return CreatedAtAction(nameof(GetProgramme), new { id = programme.Id }, programme);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
     [HttpPut("{id}")]
