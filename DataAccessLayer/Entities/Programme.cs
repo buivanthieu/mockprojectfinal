@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 namespace DataAccessLayer.Entities;
 public class Programme
 {
+    [Key]
     public int Id { get; set; }
 
     [Required]

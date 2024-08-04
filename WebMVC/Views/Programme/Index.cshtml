@@ -1,13 +1,13 @@
-@model IEnumerable<Programme>
+@model IEnumerable<WebMVC.Models.Programme>
 
 @{
-    ViewData["Title"] = "Programmes";
+ViewData["Title"] = "Programme Index";
 }
 
-<h2>Programmes</h2>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
 </p>
 
 <table class="table">
@@ -16,22 +16,24 @@
         <th>Name</th>
         <th>Description</th>
         <th>Contact</th>
+        <th>Is Active</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Description</td>
-            <td>@item.Contact?.Name @item.Contact?.Name</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+    <tr>
+        <td>@item.Name</td>
+        <td>@item.Description</td>
+        <td>@item.ContactId</td> <!-- Giả sử bạn có thuộc tính ContactName để hiển thị tên liên hệ -->
+        <td>@(item.IsActive ? "Yes" : "No")</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+        </td>
+    </tr>
     }
     </tbody>
 </table>

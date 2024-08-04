@@ -53,8 +53,6 @@ P
  WebMVC/Views/Home/Privacy.cshtml,3\4\34f834e8b6eea4052d61e8afc372c34ecbef3e4b
 T
 $WebMVC/Views/Programme/Create.cshtml,0\3\037c002166e95ab09c07a067d2fa0a424a38cba6
-W
-'WebMVC/Views/Programme/Create.cshtml.cs,f\3\f3532aa195ecfa184cc2cc09dcbd64236b0ca70c
 T
 $WebMVC/Views/Programme/Delete.cshtml,8\5\853f1f2443746be2b2d104859154f4a7c952cb9b
 G
@@ -73,3 +71,35 @@ N
 WebMVC/Views/_ViewStart.cshtml,6\a\6a46e3675abed6ecc693aaa5ccb808fa7a27e524
 L
 WebMVC/Models/ManagerName.cs,1\c\1ce8934dd45e8e6bb25b966409ea5dd0b4858b45
+h
+8BusinessLogicLayer/Repositories/ManagerNameRepository.cs,7\e\7e68eb7b4e726584815208e862f001dd6a72d67e
+X
+(WebMVC/Controllers/BusinessController.cs,7\8\78a6d430ebb28a7ee023eb69e76e91b1de5dde3d
+D
+WebMVC/WebMVC.csproj,6\2\62f0dde68926fbb6154d6928d143ba1c20826d76
+d
+4BusinessLogicLayer/Repositories/ContactRepository.cs,e\0\e03af14075bfc9463b9c040a2649f833b509dcd6
+D
+WebAPI/WebAPI.csproj,6\5\6597775cd23d44e3ae763109f9db9b0cad35e8ac
+U
+%DataAccessLayer/Entities/Programme.cs,a\a\aaf39250013aef408201cfd55237e3a29fa6a927
+]
+-BusinessLogicLayer/Services/ContactService.cs,2\7\27fc5d507b9c99dac75fff06f9b3226ebf4cf6b7
+c
+3BusinessLogicLayer/Interfaces/IContactRepository.cs,5\8\58069e34a5d69a4c9315ae1564da3b193b1a18e4
+\
+,DataAccessLayer/Data/ApplicationDbContext.cs,c\9\c952da6fcd47f15df1e5bfa59be06fd3369cce93
+A
+WebAPI/Program.cs,f\a\faf253c58a39a374edeb1be4d2051b0cbd62f276
+S
+#DataAccessLayer/Entities/Contact.cs,0\0\00c12febcc5f87d1edd0af3198ddaa502981cc18
+Z
+*DataAccessLayer/Entities/Dto/ContactDto.cs,0\4\0426ae63303beaf47db1cbddd78524e53195fee5
+W
+'DataAccessLayer/Entities/ManagerName.cs,c\9\c9967f8699aa919385d9fbf6a4e3741067cb5e71
+\
+,DataAccessLayer/Entities/Dto/ProgrammeDto.cs,4\1\41c9b799ee9e5a99423edd0b961f0c8b6e00a26e
+M
+WebMVC/Models/ProgrammeDto.cs,8\6\86d319346d7e46bd737ce3e9401a7cfa7f802032
+O
+WebMVC/Models/ErrorViewModel.cs,b\3\b3bcbe558fea866619990dbc29450398bcdb0610

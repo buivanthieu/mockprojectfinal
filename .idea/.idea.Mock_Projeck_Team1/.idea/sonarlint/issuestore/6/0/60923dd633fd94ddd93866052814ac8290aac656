@@ -1,6 +1,6 @@
 
-…csharpsquid:S6967";ModelState.IsValid should be checked in controller actions.(æ­Ë£8ùéîë‘2J$11ee3475-ca8a-493e-b036-09a5952dfc34
-dcsharpsquid:S6967F";ModelState.IsValid should be checked in controller actions.(áÓ¯¯ûÿÿÿÿ8÷Œî‘2
-Šcsharpsquid:S6967o";ModelState.IsValid should be checked in controller actions.(ü»›Şùÿÿÿÿ8úéîë‘2J$c817865f-c2e6-4040-a61f-ec924b9fdde0
-Šcsharpsquid:S6967{";ModelState.IsValid should be checked in controller actions.(–…Ï‚üÿÿÿÿ8úéîë‘2J$0cb62de4-b98c-4029-a9a9-58cb80543c93
-hcsharpsquid:S1192""DDefine a constant instead of using this literal 'Firstname' 4 times.(ëüí8úŒî‘2
+_csharpsquid:S6967";ModelState.IsValid should be checked in controller actions.(æ­Ë£8Î·ñ÷‘2
+dcsharpsquid:S6967H";ModelState.IsValid should be checked in controller actions.(áÓ¯¯ûÿÿÿÿ8Ş·ñ÷‘2
+ecsharpsquid:S6967€";ModelState.IsValid should be checked in controller actions.(ü»›Şùÿÿÿÿ8î·ñ÷‘2
+ecsharpsquid:S6967";ModelState.IsValid should be checked in controller actions.(–…Ï‚üÿÿÿÿ8ï·ñ÷‘2
+vcsharpsquid:S4144€"LUpdate this method so that its implementation is not identical to 'Details'.(ü»›Şùÿÿÿÿ8ï·ñ÷‘2

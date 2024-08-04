@@ -1,42 +1,46 @@
-@model Programme
+@model WebMVC.Models.Programme
 
 @{
-ViewData["Title"] = "Programme Details";
+    ViewData["Title"] = "Programme Details";
 }
 
-<h2>Programme Details</h2>
+<h1>@ViewData["Title"]</h1>
 
 <div>
     <h4>Programme</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            Name
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class="col-sm-10">
-            @Model.Name
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class="col-sm-2">
-            Description
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class="col-sm-10">
-            @Model.Description
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class="col-sm-2">
-            Contact
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Contact)
         </dt>
-        <dd class="col-sm-10">
-            @Model.Contact?.Name @Model.Contact?.Name
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Contact.Name)
         </dd>
-        <dt class="col-sm-2">
-            Is Active
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IsActive)
         </dt>
-        <dd class="col-sm-10">
-            @Model.IsActive
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IsActive)
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
