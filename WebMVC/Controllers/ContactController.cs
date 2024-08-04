@@ -20,31 +20,52 @@ public class ContactController : Controller
         return View(contacts);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Index(
+        string? firstNameSearch,
+        string? surnameSearch,
+        bool? isActiveFilter)
+    {
+        Console.WriteLine($"ContactController: TAG-PT: {isActiveFilter}");
+        var contacts =
+            await _contactService.GetAllContactsByFirstNameAndSurnameAndIsActive
+            (
+                firstNameSearch,
+                surnameSearch,
+                isActiveFilter
+            );
+        ViewBag.FirstNameSearch = firstNameSearch;
+        ViewBag.SurnameSearch = surnameSearch;
+        ViewBag.IsActiveFilter = isActiveFilter ?? true;
+        return View(contacts);
+    }
+
     public async Task<IActionResult> Details(int id)
     {
         var contact = await _contactService.GetContactByIdAsync(id);
         return View(contact);
     }
-    //
+
     [HttpGet]
     public async Task<IActionResult> Create()
     {
+        Console.WriteLine($"TAG-PT: for view create");
         var managerNames = await _contactService.GetAllManagerNamesAsync();
-        ViewBag.ManagerNames = new SelectList(managerNames);
+        ViewBag.ManagerNames = new SelectList(managerNames, "Id", "Name", "Name");
         return View();
     }
-    //
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateContactDto contact)
     {
-       
+        Console.WriteLine($"TAG-PT: for action create");
+        if (ModelState.IsValid)
+        {
             await _contactService.CreateContactAsync(contact);
-       
-        var managerNames = await _contactService.GetAllManagerNamesAsync();
-        ViewBag.ManagerNames = new SelectList(managerNames);
+            return RedirectToAction(nameof(Index));
+        }
+
         return View(contact);
     }
-
-    
 }

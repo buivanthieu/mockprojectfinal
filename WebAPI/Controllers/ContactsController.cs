@@ -7,7 +7,7 @@ namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ContactsController : ControllerBase 
+public class ContactsController : ControllerBase
 {
     private readonly ContactService _contactService;
     private readonly ManagerNameService _managerNameService;
@@ -24,8 +24,25 @@ public class ContactsController : ControllerBase
         return Ok(await _contactService.GetAllContacts());
     }
 
+    [HttpGet("manager_names")]
+    public async Task<ActionResult<IEnumerable<ManagerName>>> GetAllManagerNames()
+    {
+        return Ok(await _managerNameService.GetAllManagerName());
+    }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<Contact>>> GetAllContactsByFirstNameAndSurnameAndIsActive
+    (
+        string? firstName,
+        string? surname,
+        bool? isActive = true
+    )
+    {
+        return Ok(await _contactService.GetAllContactsByFirstNameAndSurnameAndIsActive(firstName, surname, isActive));
+    }
+
     [HttpGet("{id}")]
-    public async Task<ActionResult<Contact>> GetContactById(int id)
+    public async Task<ActionResult<ContactDto>> GetContactById(int id)
     {
         var contact = await _contactService.GetContactById(id);
         if (contact == null)
