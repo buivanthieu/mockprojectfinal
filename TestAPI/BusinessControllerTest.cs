@@ -28,8 +28,8 @@ namespace TestAPI
             // Arrange
             var businessTypes = new List<BusinessType>
             {
-                new BusinessType { BusinessID = 1, BusinessName = "Retail", SICCode = "1234" },
-                new BusinessType { BusinessID = 2, BusinessName = "Wholesale", SICCode = "5678" }
+                new BusinessType { BussinessID = 1, BusinessName = "Retail", SICCode = "1234" },
+                new BusinessType { BussinessID = 2, BusinessName = "Wholesale", SICCode = "5678" }
             };
 
             _businessTypeServiceMock.Setup(service => service.SearchBusinessTypes("Retail", "1234"))
@@ -46,7 +46,7 @@ namespace TestAPI
             var returnValue = okResult.Value as IEnumerable<BusinessType>;
             Assert.IsNotNull(returnValue);
             Assert.That(returnValue.Count(), Is.EqualTo(2));
-            Assert.That(returnValue.First().BusinessID, Is.EqualTo(1));
+            Assert.That(returnValue.First().BussinessID, Is.EqualTo(1));
             Assert.That(returnValue.First().BusinessName, Is.EqualTo("Retail"));
             Assert.That(returnValue.First().SICCode, Is.EqualTo("1234"));
         }
@@ -77,7 +77,7 @@ namespace TestAPI
             // Arrange
             var businessTypes = new List<BusinessType>
             {
-                new BusinessType { BusinessID = 1, BusinessName = "Retail", SICCode = "1234" }
+                new BusinessType { BussinessID = 1, BusinessName = "Retail", SICCode = "1234" }
             };
 
             _businessTypeServiceMock.Setup(service => service.SearchBusinessTypes("Retail", ""))
@@ -103,7 +103,7 @@ namespace TestAPI
             // Arrange
             var businessTypes = new List<BusinessType>
             {
-                new BusinessType { BusinessID = 1, BusinessName = "Retail", SICCode = "1234" }
+                new BusinessType { BussinessID = 1, BusinessName = "Retail", SICCode = "1234" }
             };
 
             _businessTypeServiceMock.Setup(service => service.SearchBusinessTypes("", "1234"))
