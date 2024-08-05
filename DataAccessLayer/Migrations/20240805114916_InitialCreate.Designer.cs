@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240803184206_InitialCreate")]
+    [Migration("20240805114916_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -148,6 +148,18 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("CountryID");
 
                     b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            CountryID = 1,
+                            CountryName = "Vietnam"
+                        },
+                        new
+                        {
+                            CountryID = 2,
+                            CountryName = "Singapo"
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.County", b =>
@@ -163,13 +175,40 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("CountyName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("CountyID");
 
                     b.HasIndex("CountryID");
 
                     b.ToTable("Counties");
+
+                    b.HasData(
+                        new
+                        {
+                            CountyID = 1,
+                            CountryID = 1,
+                            CountyName = "Hanoi1"
+                        },
+                        new
+                        {
+                            CountyID = 2,
+                            CountryID = 2,
+                            CountyName = "Sing1"
+                        },
+                        new
+                        {
+                            CountyID = 3,
+                            CountryID = 1,
+                            CountyName = "Hanoi2"
+                        },
+                        new
+                        {
+                            CountyID = 4,
+                            CountryID = 2,
+                            CountyName = "Sing2"
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.GovernmentOfficeRegion", b =>
@@ -201,6 +240,176 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("CountyId");
 
                     b.ToTable("GovernmentOfficeRegions");
+
+                    b.HasData(
+                        new
+                        {
+                            GovernmentOfficeRegionId = 1,
+                            CountyId = 1,
+                            Description = "Des1",
+                            GovernmentOfficeRegionName = "GOV1",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 2,
+                            CountyId = 2,
+                            Description = "Des2",
+                            GovernmentOfficeRegionName = "GOV2",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 3,
+                            CountyId = 3,
+                            Description = "Des3",
+                            GovernmentOfficeRegionName = "AGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 4,
+                            CountyId = 4,
+                            Description = "Des4",
+                            GovernmentOfficeRegionName = "BGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 5,
+                            CountyId = 3,
+                            Description = "Des5",
+                            GovernmentOfficeRegionName = "FGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 6,
+                            CountyId = 4,
+                            Description = "Des6",
+                            GovernmentOfficeRegionName = "MOV",
+                            IsActive = false
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 7,
+                            CountyId = 2,
+                            Description = "Des7",
+                            GovernmentOfficeRegionName = "POV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 8,
+                            CountyId = 1,
+                            Description = "Des8",
+                            GovernmentOfficeRegionName = "TGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 9,
+                            CountyId = 3,
+                            Description = "Des9",
+                            GovernmentOfficeRegionName = "XGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 10,
+                            CountyId = 4,
+                            Description = "Des10",
+                            GovernmentOfficeRegionName = "ZGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 11,
+                            CountyId = 4,
+                            Description = "Des11",
+                            GovernmentOfficeRegionName = "WGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 12,
+                            CountyId = 2,
+                            Description = "Des12",
+                            GovernmentOfficeRegionName = "OGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 13,
+                            CountyId = 3,
+                            Description = "Des13",
+                            GovernmentOfficeRegionName = "RGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 14,
+                            CountyId = 1,
+                            Description = "Des14",
+                            GovernmentOfficeRegionName = "CGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 15,
+                            CountyId = 2,
+                            Description = "Des15",
+                            GovernmentOfficeRegionName = "KGOV",
+                            IsActive = false
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 16,
+                            CountyId = 1,
+                            Description = "Des16",
+                            GovernmentOfficeRegionName = "GOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 17,
+                            CountyId = 2,
+                            Description = "Des17",
+                            GovernmentOfficeRegionName = "IGOV",
+                            IsActive = false
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 18,
+                            CountyId = 3,
+                            Description = "Des18",
+                            GovernmentOfficeRegionName = "JGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 19,
+                            CountyId = 2,
+                            Description = "Des19",
+                            GovernmentOfficeRegionName = "LGOV",
+                            IsActive = false
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 20,
+                            CountyId = 4,
+                            Description = "Des20",
+                            GovernmentOfficeRegionName = "HGOV",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            GovernmentOfficeRegionId = 21,
+                            CountyId = 2,
+                            Description = "Des21",
+                            GovernmentOfficeRegionName = "0OV2",
+                            IsActive = true
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.ManagerName", b =>
