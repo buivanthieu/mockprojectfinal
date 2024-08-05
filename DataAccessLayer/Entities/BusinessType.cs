@@ -5,7 +5,7 @@ namespace DataAccessLayer.Entities;
 public class BusinessType
 {
     [Key]
-    public int BusinessID { get; set; }
+    public int BussinessID { get; set; }
     [Required]
     public string? BusinessName { get; set; }
     [Required]
