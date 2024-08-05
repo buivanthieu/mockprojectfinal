@@ -14,11 +14,11 @@ public class AddressService : IAddressService
 
     public IEnumerable<AddressSearchResult> SearchAddresses(string? postcode, string? street, string? town)
     {
-        // You might want to add some logic here to handle empty strings as well
         postcode = string.IsNullOrWhiteSpace(postcode) ? null : postcode;
         street = string.IsNullOrWhiteSpace(street) ? null : street;
         town = string.IsNullOrWhiteSpace(town) ? null : town;
 
-        return _addressRepository.Search(postcode, street, town);
+        var results = _addressRepository.Search(postcode, street, town);
+        return results ?? Enumerable.Empty<AddressSearchResult>();
     }
 }
