@@ -37,9 +37,10 @@ namespace WebMVC.Controllers
                 var content = await response.Content.ReadAsStringAsync();
                 var results = JsonSerializer.Deserialize<List<AddressSearchResult>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                int pageSize = 15;  
-                if(results == null){
-                    throw new InvalidOperationException("No results found.");
+                int pageSize = 5;  
+                if(results == null || !results.Any())
+                {
+                    return PartialView("_SearchResults", new PagedResult<AddressSearchResult>());
                 }
                 int totalItems = results.Count;
                 var itemsOnPage = results.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -49,7 +50,8 @@ namespace WebMVC.Controllers
                     Items = itemsOnPage,
                     PageNumber = page,
                     PageSize = pageSize,
-                    TotalItems = totalItems
+                    TotalItems = totalItems,
+                    TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize) // Add this line
                 };
 
                 return PartialView("_SearchResults", pagedResult);

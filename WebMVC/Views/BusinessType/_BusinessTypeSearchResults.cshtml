@@ -1,60 +1,64 @@
 @model DataAccessLayer.Entities.PagedResult<DataAccessLayer.Entities.BusinessType>
 
-@if (Model != null && Model.Items.Any())
+@if (Model != null && Model.Items != null && Model.Items.Any())
 {
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="table-light">
-            <tr>
-                <th>Select</th>
-                <th>Business Name</th>
-                <th>SIC Code</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.Items)
-            {
-                <tr>
-                    <td>
-                        <input type="radio" class="form-check-input" name="selectedBusiness" data-business-name="@item.BusinessName" data-sic-code="@item.SICCode" />
-                    </td>
-                    <td>@item.BusinessName</td>
-                    <td>@item.SICCode</td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-
-    <nav aria-label="Page navigation">
-        @if (Model.TotalPages > 1)
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+        <tr>
+            <th>Select</th>
+            <th>Business Name</th>
+            <th>SIC Code</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Items)
         {
-            <ul class="pagination justify-content-center">
-                @if (Model.PageNumber > 1)
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0)" onclick="loadPage(@(Model.PageNumber - 1))">Previous</a>
-                    </li>
-                }
-                @for (var i = 1; i <= Model.TotalPages; i++)
-                {
-                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                        <a class="page-link" href="javascript:void(0)" onclick="loadPage(@i)">@i</a>
-                    </li>
-                }
-                @if (Model.PageNumber < Model.TotalPages)
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0)" onclick="loadPage(@(Model.PageNumber + 1))">Next</a>
-                    </li>
-                }
-            </ul>
+        <tr>
+            <td>
+                <input type="radio" class="form-check-input" name="selectedBusiness" data-business-name="@item.BusinessName" data-sic-code="@item.SICCode" />
+            </td>
+            <td>@item.BusinessName</td>
+            <td>@item.SICCode</td>
+        </tr>
         }
-    </nav>
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @if (Model.PageNumber > 1)
+        {
+        <li class="page-item">
+            <a class="page-link" href="javascript:void(0)" onclick="loadPage(@(Model.PageNumber - 1))">Previous</a>
+        </li>
+        }
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+            <a class="page-link" href="javascript:void(0)" onclick="loadPage(@i)">@i</a>
+        </li>
+        }
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+        <li class="page-item">
+            <a class="page-link" href="javascript:void(0)" onclick="loadPage(@(Model.PageNumber + 1))">Next</a>
+        </li>
+        }
+    </ul>
+</nav>
+
+<p class="text-center">
+    Page @Model.PageNumber of @Model.TotalPages
+</p>
+}
 }
 else
 {
-    <div class="alert alert-info" role="alert">
-        No results found.
-    </div>
+<div class="alert alert-info" role="alert">
+    No results found.
+</div>
 }
