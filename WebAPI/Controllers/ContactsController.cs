@@ -1,3 +1,4 @@
+using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.Services;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Entities.Dto;
@@ -9,10 +10,10 @@ namespace WebAPI.Controllers;
 [Route("api/[controller]")]
 public class ContactsController : ControllerBase
 {
-    private readonly ContactService _contactService;
-    private readonly ManagerNameService _managerNameService;
+    private readonly IContactService _contactService;
+    private readonly IManagerNameService _managerNameService;
 
-    public ContactsController(ContactService contactService, ManagerNameService managerNameService)
+    public ContactsController(IContactService contactService, IManagerNameService managerNameService)
     {
         _contactService = contactService;
         _managerNameService = managerNameService;
@@ -31,14 +32,22 @@ public class ContactsController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<Contact>>> GetAllContactsByFirstNameAndSurnameAndIsActive
+    public async Task<ActionResult<PagedResult<Contact>>> GetAllContactsByFirstNameAndSurnameAndIsActive
     (
         string? firstName,
         string? surname,
-        bool? isActive = true
+        bool? isActive = true,
+        int page = 1,
+        int pageSize = 4
     )
     {
-        return Ok(await _contactService.GetAllContactsByFirstNameAndSurnameAndIsActive(firstName, surname, isActive));
+        return Ok(await _contactService.GetAllContactsByFirstNameAndSurnameAndIsActive
+            (
+                firstName,
+                surname,
+                isActive, page, pageSize
+            )
+        );
     }
 
     [HttpGet("{id}")]

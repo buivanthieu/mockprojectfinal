@@ -3,7 +3,7 @@ using DataAccessLayer.Entities.Dto;
 
 namespace BusinessLogicLayer.Interfaces;
 
-public interface IContactRepository
+public interface IContactService
 {
     Task<IEnumerable<Contact>> GetAllContacts();
 
@@ -16,6 +16,8 @@ public interface IContactRepository
     );
 
     Task<Contact?> GetContactById(int id);
+
     Task AddContact(Contact contact);
+
     Task UpdateContact(Contact contact);
 }

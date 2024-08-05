@@ -44,8 +44,14 @@ public class ContactRepository : IContactRepository
         return contacts;
     }
 
-    public async Task<IEnumerable<Contact>> GetAllContactsByFirstNameAndSurnameAndIsActive(string? firstName,
-        string? surname, bool? isActive)
+    public async Task<PagedResult<ContactDto>> GetAllContactsByFirstNameAndSurnameAndIsActive
+    (
+        string? firstName,
+        string? surname,
+        bool? isActive,
+        int page = 1,
+        int pageSize = 4
+    )
     {
         var query = _context.Contacts.AsQueryable();
         if (!firstName.IsNullOrEmpty())
@@ -62,9 +68,13 @@ public class ContactRepository : IContactRepository
         {
             query = query.Where(c => c.IsActive == isActive);
         }
+        // Đếm tổng số items
+        var totalItems = await query.CountAsync();
 
         var contacts = await query
             .Include(c => c.ManagerName)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .Select(c => new ContactDto
             {
                 Id = c.Id,
@@ -86,7 +96,13 @@ public class ContactRepository : IContactRepository
             })
             .ToListAsync();
 
-        return contacts;
+        return new PagedResult<ContactDto>
+        {
+            Items = contacts,
+            TotalItems = totalItems,
+            PageNumber = page,
+            PageSize = pageSize,
+        };
     }
 
     public async Task<Contact?> GetContactById(int id)

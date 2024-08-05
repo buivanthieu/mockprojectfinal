@@ -1,9 +1,10 @@
 using BusinessLogicLayer.Interfaces;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Entities.Dto;
 
 namespace BusinessLogicLayer.Services;
 
-public class ContactService
+public class ContactService : IContactService
 {
     private readonly IContactRepository _contactRepository;
 
@@ -17,14 +18,23 @@ public class ContactService
         return await _contactRepository.GetAllContacts();
     }
 
-    public async Task<IEnumerable<Contact>> GetAllContactsByFirstNameAndSurnameAndIsActive
+    public async Task<PagedResult<ContactDto>> GetAllContactsByFirstNameAndSurnameAndIsActive
     (
         string? firstName,
         string? surname,
-        bool? isActive
+        bool? isActive,
+        int page = 1,
+        int pageSize = 4
     )
     {
-        return await _contactRepository.GetAllContactsByFirstNameAndSurnameAndIsActive(firstName, surname, isActive);
+        return await _contactRepository.GetAllContactsByFirstNameAndSurnameAndIsActive
+        (
+            firstName,
+            surname,
+            isActive,
+            page,
+            pageSize
+        );
     }
 
     public async Task<Contact?> GetContactById(int id)

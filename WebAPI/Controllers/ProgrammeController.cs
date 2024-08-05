@@ -13,9 +13,9 @@ namespace WebAPI.Controllers
     public class ProgrammeController : ControllerBase
     {
         private readonly IProgrammeService _programmeService;
-        private readonly ContactService _contactService;
+        private readonly IContactService _contactService;
 
-        public ProgrammeController(IProgrammeService programmeService, ContactService contactService)
+        public ProgrammeController(IProgrammeService programmeService, IContactService contactService)
         {
             _programmeService = programmeService;
             _contactService = contactService;
