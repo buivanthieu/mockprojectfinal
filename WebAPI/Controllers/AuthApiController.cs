@@ -16,26 +16,33 @@ public class AuthApiController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model)
     {
         var token = await _authService.LoginAsync(model);
         if (token == null)
         {
-            return Unauthorized(new { message = "Invalid username or password" });
+            return Unauthorized(new ResponseModel { Message = "Invalid username or password" });
         }
-
-        return Ok(new { Token = token });
+        return Ok(new ResponseModel { Token = token });
     }
 
     [HttpPost("forgotpassword")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordViewModel model)
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
     {
         var result = await _authService.ForgotPasswordAsync(model);
         if (!result)
         {
-            return BadRequest(new { message = "Username and Email do not match" });
+            return BadRequest(new ResponseModel { Message = "Username and Email do not match" });
         }
-
-        return Ok(new { message = "Password has been sent to your email" });
+        return Ok(new ResponseModel { Message = "Password has been sent to your email" });
     }
+
+    
+    
+    public class ResponseModel
+    {
+        public string Token { get; set; }
+        public string Message { get; set; }
+    }
+
 }
