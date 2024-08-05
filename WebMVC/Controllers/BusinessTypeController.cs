@@ -16,6 +16,7 @@ namespace WebMVC.Controllers
         public BusinessTypeController(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
+            
         }
 
         [HttpGet("search")]
@@ -30,8 +31,9 @@ namespace WebMVC.Controllers
             businessName = businessName ?? string.Empty;
             sicCode = sicCode ?? string.Empty;
 
-            var client = _clientFactory.CreateClient("BusinessTypeAPI");
-            var response = await client.GetAsync($"api/businesstype/search?businessName={Uri.EscapeDataString(businessName)}&sicCode={Uri.EscapeDataString(sicCode)}");
+            var client = _clientFactory.CreateClient("DefaultAPI");
+            
+            var response = await client.GetAsync($"businesstype/search?businessName={Uri.EscapeDataString(businessName)}&sicCode={Uri.EscapeDataString(sicCode)}");
 
             if (response.IsSuccessStatusCode)
             {
