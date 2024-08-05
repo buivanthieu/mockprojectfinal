@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
@@ -89,7 +91,7 @@ namespace DataAccessLayer.Migrations
                     CountyID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CountryID = table.Column<int>(type: "int", nullable: false),
-                    CountyName = table.Column<string>(type: "longtext", nullable: false)
+                    CountyName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -244,6 +246,54 @@ namespace DataAccessLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "CountryID", "CountryName" },
+                values: new object[,]
+                {
+                    { 1, "Vietnam" },
+                    { 2, "Singapo" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Counties",
+                columns: new[] { "CountyID", "CountryID", "CountyName" },
+                values: new object[,]
+                {
+                    { 1, 1, "Hanoi1" },
+                    { 2, 2, "Sing1" },
+                    { 3, 1, "Hanoi2" },
+                    { 4, 2, "Sing2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "GovernmentOfficeRegions",
+                columns: new[] { "GovernmentOfficeRegionId", "CountyId", "Description", "GovernmentOfficeRegionName", "IsActive" },
+                values: new object[,]
+                {
+                    { 1, 1, "Des1", "GOV1", true },
+                    { 2, 2, "Des2", "GOV2", true },
+                    { 3, 3, "Des3", "AGOV", true },
+                    { 4, 4, "Des4", "BGOV", true },
+                    { 5, 3, "Des5", "FGOV", true },
+                    { 6, 4, "Des6", "MOV", false },
+                    { 7, 2, "Des7", "POV", true },
+                    { 8, 1, "Des8", "TGOV", true },
+                    { 9, 3, "Des9", "XGOV", true },
+                    { 10, 4, "Des10", "ZGOV", true },
+                    { 11, 4, "Des11", "WGOV", true },
+                    { 12, 2, "Des12", "OGOV", true },
+                    { 13, 3, "Des13", "RGOV", true },
+                    { 14, 1, "Des14", "CGOV", true },
+                    { 15, 2, "Des15", "KGOV", false },
+                    { 16, 1, "Des16", "GOV", true },
+                    { 17, 2, "Des17", "IGOV", false },
+                    { 18, 3, "Des18", "JGOV", true },
+                    { 19, 2, "Des19", "LGOV", false },
+                    { 20, 4, "Des20", "HGOV", true },
+                    { 21, 2, "Des21", "0OV2", true }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_TownID",

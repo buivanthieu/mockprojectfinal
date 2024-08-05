@@ -40,6 +40,17 @@ builder.Services.AddScoped<IBusinessTypeRepository, BusinessTypeRepository>();
 builder.Services.AddScoped<IBusinessTypeService, BusinessTypeService>();
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -53,7 +64,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
+app.UseCors("AllowAllOrigins");
 
 app.UseStaticFiles();
 
