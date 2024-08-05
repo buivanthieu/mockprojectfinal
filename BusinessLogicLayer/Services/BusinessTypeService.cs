@@ -14,6 +14,7 @@ public class BusinessTypeService : IBusinessTypeService
 
     public IEnumerable<BusinessType> SearchBusinessTypes(string businessName, string sicCode)
     {
-        return _repository.Search(businessName, sicCode);
+        var results = _repository.Search(businessName, sicCode);
+        return results ?? Enumerable.Empty<BusinessType>();
     }
 }
