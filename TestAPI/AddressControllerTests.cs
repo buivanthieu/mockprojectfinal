@@ -1,133 +1,176 @@
-using BusinessLogicLayer.Repositories;
-using BusinessLogicLayer.Services;
-using DataAccessLayer.Data;
-using DataAccessLayer.Entities;
+using NUnit.Framework;
+using Moq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebAPI.Controllers;
-using Xunit;
-using Assert = Xunit.Assert;
+using BusinessLogicLayer.Interfaces;
+using DataAccessLayer.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
-
-namespace TestAPI;
-
-public sealed class AddressControllerTests : IDisposable
+namespace TestAPI
+{
+    [TestFixture]
+    public class AddressControllerTests
     {
-        private readonly ApplicationDbContext _context;
-        private readonly AddressController _controller;
-        private bool _disposed = false;
-        public AddressControllerTests()
+        private AddressController _controller;
+        private Mock<IAddressService> _addressServiceMock;
+
+        [SetUp]
+        public void Setup()
         {
-            // Set up in-memory database
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-
-            _context = new ApplicationDbContext(options);
-
-            // Set up the repository and service
-            var repository = new AddressRepository(_context);
-            var service = new AddressService(repository);
-
-            // Set up the controller
-            _controller = new AddressController(service);
-
-            // Seed the database
-            SeedDatabase();
+            _addressServiceMock = new Mock<IAddressService>();
+            _controller = new AddressController(_addressServiceMock.Object);
         }
 
-        private void SeedDatabase()
+        [Test]
+        public void Search_ReturnsCorrectAddressDetails()
         {
-            var country = new Country { CountryID = 1, CountryName = "TestCountry" };
-            var county = new County { CountyID = 1, CountryID = 1, CountyName = "TestCounty", Country = country };
-            var town = new Town { TownID = 1, CountyID = 1, TownName = "TestTown", County = county };
-            var address = new Address { AddressID = 1, AddressName = "123 Test St", PostCode = "12345", TownID = 1, Town = town };
-
-            _context.Countries.Add(country);
-            _context.Counties.Add(county);
-            _context.Towns.Add(town);
-            _context.Addresses.Add(address);
-            _context.SaveChanges();
-        }
-
-        [Fact]
-        public void Search_WithValidPostcode_ReturnsCorrectResult()
-        {
-            // Act
-            var result = _controller.Search(postcode: "12345");
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var addresses = Assert.IsAssignableFrom<IEnumerable<AddressSearchResult>>(okResult.Value);
-            var addressList = addresses.ToList();
-
-            Assert.Single(addressList);
-            Assert.Equal("123 Test St", addressList[0].Address);
-            Assert.Equal("12345", addressList[0].PostCode);
-            Assert.Equal("TestTown", addressList[0].Town);
-            Assert.Equal("TestCounty", addressList[0].County);
-            Assert.Equal("TestCountry", addressList[0].CountryName);
-        }
-
-        [Fact]
-        public void Search_WithNonExistentPostcode_ReturnsEmptyResult()
-        {
-            // Act
-            var result = _controller.Search(postcode: "99999");
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var addresses = Assert.IsAssignableFrom<IEnumerable<AddressSearchResult>>(okResult.Value);
-            Assert.Empty(addresses);
-        }
-
-        [Fact]
-        public void Search_WithValidStreet_ReturnsCorrectResult()
-        {
-            // Act
-            var result = _controller.Search(street: "Test St");
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var addresses = Assert.IsAssignableFrom<IEnumerable<AddressSearchResult>>(okResult.Value);
-            var addressList = addresses.ToList();
-
-            Assert.Single(addressList);
-            Assert.Equal("123 Test St", addressList[0].Address);
-        }
-
-        [Fact]
-        public void Search_WithValidTown_ReturnsCorrectResult()
-        {
-            // Act
-            var result = _controller.Search(town: "TestTown");
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var addresses = Assert.IsAssignableFrom<IEnumerable<AddressSearchResult>>(okResult.Value);
-            var addressList = addresses.ToList();
-
-            Assert.Single(addressList);
-            Assert.Equal("TestTown", addressList[0].Town);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
+            // Arrange
+            var addresses = new List<AddressSearchResult>
             {
-                if (disposing)
-                {
-                    _context.Database.EnsureDeleted();
-                    _context.Dispose();
-                }
+                new AddressSearchResult { Address = "123 Test St", PostCode = "12345", Town = "TestTown", County = "TestCounty", CountryName = "TestCountry" }
+            };
 
-                _disposed = true;
-            }
+            _addressServiceMock.Setup(service => service.SearchAddresses("12345", "Test St", "TestTown"))
+                .Returns(addresses);
+
+            // Act
+            var result = _controller.Search("12345", "Test St", "TestTown");
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var returnValue = okResult.Value as IEnumerable<AddressSearchResult>;
+            Assert.IsNotNull(returnValue);
+            Assert.That(returnValue.Count(), Is.EqualTo(1));
+            var address = returnValue.First();
+            Assert.That(address.Address, Is.EqualTo("123 Test St"));
+            Assert.That(address.PostCode, Is.EqualTo("12345"));
+            Assert.That(address.Town, Is.EqualTo("TestTown"));
+            Assert.That(address.County, Is.EqualTo("TestCounty"));
+            Assert.That(address.CountryName, Is.EqualTo("TestCountry"));
+        }
+
+        [Test]
+        public void Search_ReturnsNotFound_WhenNoAddressesMatch()
+        {
+            // Arrange
+            _addressServiceMock.Setup(service => service.SearchAddresses("Nonexistent", "9999", "NonexistentTown"))
+                .Returns(new List<AddressSearchResult>());
+
+            // Act
+            var result = _controller.Search("Nonexistent", "9999", "NonexistentTown");
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var returnValue = okResult.Value as IEnumerable<AddressSearchResult>;
+            Assert.IsNotNull(returnValue);
+            Assert.IsEmpty(returnValue);
+        }
+
+        [Test]
+        public void Search_ReturnsCorrectAddress_WhenOnlyPostcodeProvided()
+        {
+            // Arrange
+            var addresses = new List<AddressSearchResult>
+            {
+                new AddressSearchResult { Address = "123 Test St", PostCode = "12345", Town = "TestTown", County = "TestCounty", CountryName = "TestCountry" }
+            };
+
+            _addressServiceMock.Setup(service => service.SearchAddresses("12345", "", ""))
+                .Returns(addresses);
+
+            // Act
+            var result = _controller.Search("12345", "", "");
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var returnValue = okResult.Value as IEnumerable<AddressSearchResult>;
+            Assert.IsNotNull(returnValue);
+            Assert.That(returnValue.Count(), Is.EqualTo(1));
+            Assert.That(returnValue.First().PostCode, Is.EqualTo("12345"));
+        }
+
+        [Test]
+        public void Search_ReturnsCorrectAddress_WhenOnlyStreetProvided()
+        {
+            // Arrange
+            var addresses = new List<AddressSearchResult>
+            {
+                new AddressSearchResult { Address = "123 Test St", PostCode = "12345", Town = "TestTown", County = "TestCounty", CountryName = "TestCountry" }
+            };
+
+            _addressServiceMock.Setup(service => service.SearchAddresses("", "Test St", ""))
+                .Returns(addresses);
+
+            // Act
+            var result = _controller.Search("", "Test St", "");
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var returnValue = okResult.Value as IEnumerable<AddressSearchResult>;
+            Assert.IsNotNull(returnValue);
+            Assert.That(returnValue.Count(), Is.EqualTo(1));
+            Assert.That(returnValue.First().Address, Is.EqualTo("123 Test St"));
+        }
+
+        [Test]
+        public void Search_ReturnsCorrectAddress_WhenOnlyTownProvided()
+        {
+            // Arrange
+            var addresses = new List<AddressSearchResult>
+            {
+                new AddressSearchResult { Address = "123 Test St", PostCode = "12345", Town = "TestTown", County = "TestCounty", CountryName = "TestCountry" }
+            };
+
+            _addressServiceMock.Setup(service => service.SearchAddresses("", "", "TestTown"))
+                .Returns(addresses);
+
+            // Act
+            var result = _controller.Search("", "", "TestTown");
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var returnValue = okResult.Value as IEnumerable<AddressSearchResult>;
+            Assert.IsNotNull(returnValue);
+            Assert.That(returnValue.Count(), Is.EqualTo(1));
+            Assert.That(returnValue.First().Town, Is.EqualTo("TestTown"));
+        }
+
+        [Test]
+        public void Search_ReturnsEmptyResult_WhenNoParametersProvided()
+        {
+            // Arrange
+            var addresses = new List<AddressSearchResult>();
+
+            _addressServiceMock.Setup(service => service.SearchAddresses("", "", ""))
+                .Returns(addresses);
+
+            // Act
+            var result = _controller.Search("", "", "");
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var returnValue = okResult.Value as IEnumerable<AddressSearchResult>;
+            Assert.IsNotNull(returnValue);
+            Assert.IsEmpty(returnValue);
         }
     }
+}
